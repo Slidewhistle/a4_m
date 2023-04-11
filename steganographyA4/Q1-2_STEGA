@@ -1,0 +1,57 @@
+1)
+    a)
+        The lowest bit layer, is the layer that contains the least amount of visual information and 
+        is the most susceptible to noise and compression artifacts. Therefore, any encoded message 
+        is at risk of being corrupted when encoded in the LSB layer.
+
+    b)
+        watermarking: An artist can use steg. to encode a watermark into an image that is imperceptible
+        to the human eye. This would allow an artist to claim their work as their own and aid them 
+        in copyright claims
+
+        Transmitting important information over the clearnet: steg can used to encode sensitive information
+        related to a buisness/individual in a seemingly innocuous file. This file can then be transmitted
+        over the internet while the encoded message is safe from prying eyes.
+
+    c)
+        in 2016, a group of hackers known as the Strider Group was found using steg. to hide a malware within
+        word documents. The word doc payloads where sent to individuals over email. Once opened, the 
+        encoded malware would be executed allowing for the stealing of sensitive information on the target.
+
+    d)
+        Checking file sizes: If a known clean version of a file is at hand, the size of that file compared to the
+        suspect file. If there are discrepancies, it possible that the file has a steganographical encoded message
+
+        Checksum/Hash: as hashes are designed such that small changes to a file result in a very different hash. A 
+        clean file can be hashed, and compared to the suspect file. If the hashes dont match, its likely that a 
+        message is encoded.
+
+    e)
+        Polyglot is a method to write a file that is multi-format. In the case of Question1.html, the file is a 
+        HTML-JPEG polyglot. This is accomplished by first providing HTML headers and then the base64 encoded
+        data of the image. When opened as an HTML file, the header is read and the web page is constructed
+        showing the image. However, when the file is opened as a JPEG, the image processing software
+        ignores the HTML code and directly reads and interprets the base64 encoded image data. This can be useful
+        as it can aid in avoiding file-checking software. Say a website only allows for the upload of html files.
+        a HTML-JPEG polyglot would evade the html-file check and successful upload the polyglot which could 
+        potentially contain malicious code.
+
+
+2)
+    first thing first, I ran the following command, which extracted a base64 encoded BMP and a hint file:
+
+        `binwalk -e Question2.png`
+    
+    from here I converted the base64 to a BMP which gave the file "output.bmp". After, i ran the following
+    command on output.bmp:
+
+        `steghide extract -sf output.bmp`
+
+    Which found an econded file called "answer.zip". Unzipping this file resulted in a txt file called
+    "answer.txt". This file contatined the hidden message:
+
+        "Steganography is like a magician's trick - the message is hidden right in front of you, but you don't see it unless you know where to look."
+
+    for the actual extracted file see "answer.txt"
+
+

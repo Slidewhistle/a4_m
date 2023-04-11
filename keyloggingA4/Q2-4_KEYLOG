@@ -1,0 +1,33 @@
+q2)
+    Malicious executables can be running in the background, even though to a normal user, it seems like the
+    executable cant be run due to admin issues. In general, it is not safe to give admin priv to arbitrary
+    software from the internet, because it can be unclear what the true goal of the software is. In the case 
+    of the demo, a keylogger was masquerading as amongus cheats. Obviously, windows defender doesnt have the
+    most secure keylogger detection. However, the installation of the keylogger (in this case) is largely 
+    due to the poor OPSEC of the user as they allowed the executable to have admin priv. In thsi case, windows
+    sees this exe as legit, as the user authenticated its admin use.
+
+q3)
+a)
+    Any form of microphone can be used to do acoustic keylogging.
+b) 
+    from the figure, it seems that acoustic keylogging can be quite accurate, as only
+    a few data points are a part of the wrong cluster (eg. h data point a part of n cluster). 
+    With this in mind, a hacker can use common-sense to replace mislabeled characters with 
+    the correct character.
+
+q4)
+    C: obviously, as a keylogger records keyboard stroke, confidentiality is totally lost. For example, passwords, 
+    SSN, usernames, etc. can all be intercepted with a keylogger
+
+    I: In general, a keylogger will only monitor keystrokes. Therefore, in most cases, integrity is not effected, as
+    any user's messages are unmodified and fully intact.
+
+    A: In general, a keylogger is passive and will try to be as minimal in regards to interface/resource use. Therefore,
+    its highly unlikely that a keylogger would effect availability
+
+    a: Its not possible to fully obfuscate a keylogger running on a machine. Therefore, a tech-savy individual would be 
+    able to realize that a malicious process is running as its logs and resource use will be logged.
+
+    a: If a password is intercepted, authentication is obviouslt compromised, as the hacker can authenticate as a legit
+    user on the compromised system.

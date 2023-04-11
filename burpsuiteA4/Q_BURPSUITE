@@ -1,0 +1,102 @@
+1. Why use Intruder over Repeater and vice versa? A few sentences should suffice.
+
+
+2. Give a brief explanation of each tool's use: 
+a. Proxy
+b. Decoder (Note that Decoder also includes Encoder) 
+c. Comparer
+d. Target
+
+3. Given the following scenarios, what Burp Suite Community tool(s) would be best to solve each problem? (i.e., list the tools 
+
+a. The project you are scanning has added another URL that needs to be scanned and added to its scope.
+
+b. The login page of a website is suspected to be vulnerable to an SQL injection.
+
+c. We want some insight into whether a set of session tokens is unpredictable or not.
+
+d. You want to see if a Cross-Origin Header will be added to your response if we add an Origin header to the request.
+
+e. You have a JWT, but you don't know what it represents, you want to find out
+
+
+4. There is a known issue with posting user reviews in Juice Shop. (set up juice shop inside kali for this).
+Using Burp Suite, find the HTTP request to post/add a review and find the issue. 
+Provide a screenshot and small explanation of the vulnerability you found as well as the Burp tool you used. 
+Explain what the issue is and why it is an issue. What might a developer do to avoid this type of issue?.
+Hint: Impersonation
+
+    The website utilizes a PUT request to submit reviews to the backend. As the website doesnt use TLS or encrytion
+    the payload of the request is recorded in plaintext. Therefore, a hacker can intercept the request, modify the 
+    values of the payload, and forward the request effectively allowing for arbitrary impersonation when it comes
+    to writing reviews. In the images provided, Q4_BURP.png shows the modification of the plaintext payload. Moreover,
+    Q4_Evidence, shows that I "michaelfairview69@gmail.com" was able to post a review as "Gotpwnded@oops.com".
+
+    To fix this, the dev should immediatley switch to HTTPS over HTTP as this would encrypt the requests, effictively
+    thwarting an attack (unless the hacker is uber determined). Furthermore, the dev could also require some form
+    of authentication when submitting a review.
+
+5. Forgot Password:
+We will now atempt to exploit the "forgot password" page in Juice Shop. 
+We will not outright tell you which tool(s) to use, but only that this page is vulnerable to a brute force attack. 
+Look around the site for Jim's email. 
+Now, if we go to the email input in forgot password, we notice that it automatically tells us our security question 
+and we can attempt to brute force answers to this question.
+
+We already have a file to try and brute force with, 
+however, the names are all capitalized, and the security question is case sensitive.
+
+Here is a command that will capitalize the first letter of each entry in the file and place the output in temp.txt:
+
+(this should be on Kali by default hopefully).
+sed 's/\w\+/\L\u&/g' /usr/share/seclists/Usernames/Names/malenames-usa-top1000.txt > ~/temp.txt
+
+If you are running into issues with this command, feel free to find a text file online of common male names as this should work too. 
+Due to the free version of Burp Suites limitations on
+requests we wanted to provide a list that is guaranteed to have the name, so you do not waste too much time.
+
+https://www.usna.edu/Users/cs/roche/courses/s15si335/proj1/files.php%3Ff=names.txt.html
+(Backup is this file where the name appears within the first 120 names)
+
+Provide proof you were able to change the password.
+
+    First, we note (from looking at reviews) that Jim's email is:
+
+        "jim@juice-sh.op"
+
+    Entering this email into the forgotten-password form reveals that 
+    Jim's security question is:
+
+        "Your eldest siblings middle name?"
+    
+    (Note in practice we would likely need to check both female and male names)
+
+    Now we will brute force the answer to the security question. To do so we first use
+    burp suites proxy tab to intercept the POST request for the password request. From 
+    this, we send the request to the intruder tool for configuration.
+
+    Once in the intruder tab, we first change the attack type to battering ram which 
+    will brute force the selected form field with user supplied payloads. We then clear the 
+    payload positions, and add the single payload position for the security question answer.
+    For an image please see Intruder_config.png.
+
+    now we configure the payload. To do this, we switch to the payloads tab (in intruder) and 
+    first ensure Payload Set is 1 and Payload type is "simple list". We then load the name list 
+    in the payload options sections. 
+
+    We can now run the attack. In this case, the actual answer to the question was the name 
+
+        "Samuel"
+
+    We knew this because the intruder output indicated that the request utilizing "Samuel" returned a
+    success code (200). We have now successfully changed Jim's password. In this case, the password
+    was changed to:
+
+        "Th!s1sapassword"
+    
+    For proof, please see Request.png and Response.png.
+
+    Finally, we verify the password actually changed by logging in as jim. For evidence please see
+    Login1.png and Login2.png.
+
+
